@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useState } from "react";
 
 export default function Game() {
@@ -49,7 +50,20 @@ function Square({
   value: string;
   onSquareClick: () => void;
 }) {
-  return <button onClick={onSquareClick}>{value}</button>;
+  return (
+    <Button
+      variant="contained"
+      className="square-button"
+      onClick={onSquareClick}
+      sx={{
+        width: 50,
+        height: 50,
+        borderRadius: 0,
+      }}
+    >
+      {value}
+    </Button>
+  );
 }
 
 function Board({
