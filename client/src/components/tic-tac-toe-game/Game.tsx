@@ -92,6 +92,8 @@ function Board({
   let status;
   if (winner) {
     status = `Winner: ${winner}`;
+  } else if (isDraw(squares)) {
+    status = "Draw";
   } else {
     status = `Next player: ${xIsNext ? "X" : "O"}`;
   }
@@ -139,5 +141,9 @@ function Board({
       }
     }
     return null;
+  }
+
+  function isDraw(squares: string[]): boolean {
+    return squares.every((square) => square !== null);
   }
 }
