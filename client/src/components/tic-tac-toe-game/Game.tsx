@@ -100,7 +100,7 @@ function Board({
 
   return (
     <>
-      <div>{status}</div>
+      <h2>{status}</h2>
       <div>
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
