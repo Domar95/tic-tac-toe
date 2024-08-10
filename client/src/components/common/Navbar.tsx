@@ -14,7 +14,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import GamesIcon from "@mui/icons-material/Games";
 
-const pages = ["Features", "About", "Login"];
+const pages = ["Leaderboard", "Contract", "About"];
 
 const Navbar = () => {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
