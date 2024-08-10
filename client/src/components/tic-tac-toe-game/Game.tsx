@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { useState } from "react";
 
 export default function Game() {
@@ -32,14 +32,12 @@ export default function Game() {
   });
 
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
+    <Container>
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      <div>
         <ol>{moves}</ol>
       </div>
-    </div>
+    </Container>
   );
 }
 
@@ -53,7 +51,6 @@ function Square({
   return (
     <Button
       variant="contained"
-      className="square-button"
       onClick={onSquareClick}
       sx={{
         width: 50,
