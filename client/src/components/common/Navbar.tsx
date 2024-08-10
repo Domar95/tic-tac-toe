@@ -38,7 +38,7 @@ const Navbar = () => {
         </Typography>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
-            <Button key={page} color="inherit">
+            <Button key={page} color="inherit" sx={{ textTransform: "none" }}>
               {page}
             </Button>
           ))}
