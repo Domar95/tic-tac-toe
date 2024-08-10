@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import GamesIcon from "@mui/icons-material/Games";
+import ConnectButton from "./ConnectButton";
 
 const pages = ["Leaderboard", "Contract", "About"];
 
@@ -49,6 +50,7 @@ const Navbar = () => {
               {page}
             </Button>
           ))}
+          <ConnectButton />
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}>
           <IconButton size="large" color="inherit" onClick={openMenu}>
@@ -61,6 +63,9 @@ const Navbar = () => {
             sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}
           >
             <MenuList>
+              <MenuItem>
+                <ConnectButton />
+              </MenuItem>
               {pages.map((page) => (
                 <MenuItem key={page} color="inherit">
                   {page}
