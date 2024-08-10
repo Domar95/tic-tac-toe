@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { Navbar } from "./components/common";
-import Game from "./components/tic-tac-toe-game/Game";
 import { ConnectionProvider } from "hooks/ConnectionContext";
+import MainContent from "components/main-content/MainContent";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <ConnectionProvider>
         <Navbar />
         <Container maxWidth="sm">
-          <Game />
+          <MainContent />
         </Container>
       </ConnectionProvider>
     </div>
