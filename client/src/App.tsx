@@ -1,14 +1,17 @@
 import { Container } from "@mui/material";
 import { Navbar } from "./components/common";
-import Game from "./components/tic-tac-toe-game/Game";
+import { ConnectionProvider } from "hooks/ConnectionContext";
+import MainContent from "components/main-content/MainContent";
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <Container maxWidth="sm">
-        <Game />
-      </Container>
+      <ConnectionProvider>
+        <Navbar />
+        <Container maxWidth="sm">
+          <MainContent />
+        </Container>
+      </ConnectionProvider>
     </div>
   );
 }
