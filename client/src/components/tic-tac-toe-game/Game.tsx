@@ -1,4 +1,4 @@
-import { Button, Container } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useState } from "react";
 
 export default function Game() {
@@ -32,15 +32,21 @@ export default function Game() {
   });
 
   return (
-    <Container>
+    <Box sx={{ p: 2 }}>
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      <Button variant="contained" onClick={() => jumpTo(0)}>
-        Restart
-      </Button>
-      <div>
-        <ol>{moves}</ol>
-      </div>
-    </Container>
+      <Stack direction="column" spacing={2} marginTop={2}>
+        <Button
+          variant="contained"
+          onClick={() => jumpTo(0)}
+          sx={{ width: 100 }}
+        >
+          Restart
+        </Button>
+        <div>
+          <ol>{moves}</ol>
+        </div>
+      </Stack>
+    </Box>
   );
 }
 
