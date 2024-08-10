@@ -34,6 +34,9 @@ export default function Game() {
   return (
     <Container>
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      <Button variant="contained" onClick={() => jumpTo(0)}>
+        Restart
+      </Button>
       <div>
         <ol>{moves}</ol>
       </div>
