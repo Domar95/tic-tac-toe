@@ -1,2 +1,4 @@
-# tic-tac-toe
-Tic Tac Toe built on blockchain
+# Tic Tac Toe
+Tic Tac Toe game powered by Ethereum blockchain
+
+<-- In construction -->
