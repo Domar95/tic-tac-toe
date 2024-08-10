@@ -28,22 +28,29 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "inherit", color: "inherit" }}
+    >
       <Toolbar disableGutters>
         <IconButton size="large" edge="start" color="inherit">
           <GamesIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, color: "inherit" }}
+        >
           Tic Tac Toe
         </Typography>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
-            <Button key={page} color="inherit" sx={{ textTransform: "none" }}>
+            <Button key={page} sx={{ textTransform: "none", color: "inherit" }}>
               {page}
             </Button>
           ))}
         </Box>
-        <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <Box sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}>
           <IconButton size="large" color="inherit" onClick={openMenu}>
             <MenuIcon />
           </IconButton>
@@ -51,7 +58,7 @@ const Navbar = () => {
             anchorEl={anchorNav}
             open={Boolean(anchorNav)}
             onClose={closeMenu}
-            sx={{ display: { xs: "flex", md: "none" } }}
+            sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}
           >
             <MenuList>
               {pages.map((page) => (
