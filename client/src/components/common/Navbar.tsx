@@ -33,7 +33,7 @@ const Navbar = () => {
       position="static"
       sx={{ backgroundColor: "#FAFAFA", color: "inherit" }}
     >
-      <Toolbar disableGutters>
+      <Toolbar disableGutters sx={{ paddingLeft: 2, paddingRight: 2 }}>
         <IconButton size="large" edge="start" color="inherit">
           <GamesIcon />
         </IconButton>
