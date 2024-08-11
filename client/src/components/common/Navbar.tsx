@@ -10,6 +10,7 @@ import {
   Menu,
   MenuList,
   MenuItem,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import GamesIcon from "@mui/icons-material/Games";
@@ -31,9 +32,9 @@ const Navbar = () => {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "inherit", color: "inherit" }}
+      sx={{ backgroundColor: "#FAFAFA", color: "inherit" }}
     >
-      <Toolbar disableGutters>
+      <Toolbar disableGutters sx={{ paddingLeft: 2, paddingRight: 2 }}>
         <IconButton size="large" edge="start" color="inherit">
           <GamesIcon />
         </IconButton>
@@ -45,11 +46,23 @@ const Navbar = () => {
           Tic Tac Toe
         </Typography>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          {pages.map((page) => (
-            <Button key={page} sx={{ textTransform: "none", color: "inherit" }}>
-              {page}
-            </Button>
-          ))}
+          <Stack direction="row" paddingRight={2}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                sx={{
+                  textTransform: "none",
+                  color: "inherit",
+                  backgroundColor: "#FAFAFA",
+                  "&:hover": {
+                    backgroundColor: "#F5F5F5",
+                  },
+                }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Stack>
           <ConnectButton />
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}>
