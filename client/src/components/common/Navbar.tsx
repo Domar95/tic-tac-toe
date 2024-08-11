@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "inherit", color: "inherit" }}
+      sx={{ backgroundColor: "#FAFAFA", color: "inherit" }}
     >
       <Toolbar disableGutters>
         <IconButton size="large" edge="start" color="inherit">
@@ -46,7 +46,14 @@ const Navbar = () => {
         </Typography>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
-            <Button key={page} sx={{ textTransform: "none", color: "inherit" }}>
+            <Button
+              key={page}
+              sx={{
+                textTransform: "none",
+                color: "inherit",
+                backgroundColor: "#FAFAFA",
+              }}
+            >
               {page}
             </Button>
           ))}
