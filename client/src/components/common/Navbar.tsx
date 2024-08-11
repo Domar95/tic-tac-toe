@@ -52,6 +52,9 @@ const Navbar = () => {
                 textTransform: "none",
                 color: "inherit",
                 backgroundColor: "#FAFAFA",
+                "&:hover": {
+                  backgroundColor: "#F5F5F5",
+                },
               }}
             >
               {page}
