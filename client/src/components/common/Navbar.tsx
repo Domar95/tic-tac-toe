@@ -10,6 +10,7 @@ import {
   Menu,
   MenuList,
   MenuItem,
+  Stack,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import GamesIcon from "@mui/icons-material/Games";
@@ -45,21 +46,23 @@ const Navbar = () => {
           Tic Tac Toe
         </Typography>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          {pages.map((page) => (
-            <Button
-              key={page}
-              sx={{
-                textTransform: "none",
-                color: "inherit",
-                backgroundColor: "#FAFAFA",
-                "&:hover": {
-                  backgroundColor: "#F5F5F5",
-                },
-              }}
-            >
-              {page}
-            </Button>
-          ))}
+          <Stack direction="row" paddingRight={2}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                sx={{
+                  textTransform: "none",
+                  color: "inherit",
+                  backgroundColor: "#FAFAFA",
+                  "&:hover": {
+                    backgroundColor: "#F5F5F5",
+                  },
+                }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Stack>
           <ConnectButton />
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" }, color: "inherit" }}>
