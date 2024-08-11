@@ -3,6 +3,7 @@ import { Navbar } from "./components/common";
 import { ConnectionProvider } from "hooks/ConnectionContext";
 import MainContent from "components/main-content/MainContent";
 import checker from "assets/checker.png";
+import HeroExtension from "components/main-content/hero/HeroExtension";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
             <MainContent />
           </Container>
         </Box>
+        <Container maxWidth="lg">
+          <HeroExtension />
+        </Container>
       </ConnectionProvider>
     </div>
   );
