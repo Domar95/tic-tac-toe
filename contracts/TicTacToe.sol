@@ -3,35 +3,41 @@ pragma solidity ^0.8.0;
 
 // Author: @domar95
 contract TicTacToe {
-    uint8[9][] public history;
-    uint8 public currentMove;
-    bool public xIsNext;
-    string public state;
+    uint8[9] private currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    // gameState: 0 = next X, 1 = next Y, 2 = winner X, 3 = winner Y, 4 = draw
+    uint8 public gameState = 0;
+    uint8 public currentMove = 0;
 
-    constructor() {
-        history.push([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-        currentMove = 0;
-        xIsNext = true;
-    }
-
-    function handlePlay(uint8 index) public returns (string memory) {
+    function handlePlay(uint8 index) public {
         require(index < 9, "Index out of bounds");
-        require(history[currentMove][index] == 0, "Square already filled");
-        require(calculateWinner(history[currentMove]) == 0, "Game already won");
-        require(isDraw(history[currentMove]) == false, "Game ended with draw");
+        require(currentBoard[index] == 0, "Square already filled");
+        require(calculateWinner() == 0, "Game already won");
+        require(!isDraw(), "Game ended with draw");
 
-        uint8[9] memory nextSquares = history[currentMove];
-        nextSquares[index] = xIsNext ? 1 : 2;
-        history.push(nextSquares);
+        currentBoard[index] = xIsNext() ? 1 : 2;
         currentMove++;
-        xIsNext = !xIsNext;
-
-        return getState();
+        updateGameState();
     }
 
-    function calculateWinner(
-        uint8[9] memory squares
-    ) public pure returns (uint8) {
+    function resetBoard() public {
+        currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        gameState = 0;
+        currentMove = 0;
+    }
+
+    function updateGameState() private {
+        uint8 winner = calculateWinner();
+
+        if (winner != 0) {
+            gameState = winner == 1 ? 2 : 3;
+        } else if (isDraw()) {
+            gameState = 4;
+        } else {
+            gameState = xIsNext() ? 0 : 1;
+        }
+    }
+
+    function calculateWinner() private view returns (uint8) {
         uint8[3][8] memory winningCombinations = [
             [0, 1, 2],
             [3, 4, 5],
@@ -48,40 +54,30 @@ contract TicTacToe {
             uint8 b = winningCombinations[i][1];
             uint8 c = winningCombinations[i][2];
             if (
-                squares[a] != 0 &&
-                squares[a] == squares[b] &&
-                squares[a] == squares[c]
+                currentBoard[a] != 0 &&
+                currentBoard[a] == currentBoard[b] &&
+                currentBoard[a] == currentBoard[c]
             ) {
-                return squares[a];
+                return currentBoard[a];
             }
         }
         return 0;
     }
 
-    function isDraw(uint8[9] memory squares) public pure returns (bool) {
+    function isDraw() private view returns (bool) {
         for (uint8 i = 0; i < 9; i++) {
-            if (squares[i] == 0) {
+            if (currentBoard[i] == 0) {
                 return false;
             }
         }
         return true;
     }
 
-    function getCurrentSquares() public view returns (uint8[9] memory) {
-        return history[currentMove];
+    function xIsNext() private view returns (bool) {
+        return currentMove % 2 == 0;
     }
 
-    function getHistory() public view returns (uint8[9][] memory) {
-        return history;
-    }
-
-    function getState() public view returns (string memory) {
-        uint8 winner = calculateWinner(history[currentMove]);
-
-        if (winner == 1) return "Winner: X";
-        if (winner == 2) return "Winner: Y";
-        if (isDraw(history[currentMove])) return "Draw";
-        if (xIsNext) return "Next player: X";
-        return "Next player: Y";
+    function getCurrentBoard() public view returns (uint8[9] memory) {
+        return currentBoard;
     }
 }
