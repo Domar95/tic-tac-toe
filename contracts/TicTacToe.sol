@@ -3,38 +3,51 @@ pragma solidity ^0.8.0;
 
 // Author: @domar95
 contract TicTacToe {
+    enum GameState {
+        NextX,
+        NextO,
+        WinnerX,
+        WinnerO,
+        Draw
+    }
+    GameState private gameState = GameState.NextX;
     uint8[9] private currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // gameState: 0 = next X, 1 = next Y, 2 = winner X, 3 = winner Y, 4 = draw
-    uint8 public gameState = 0;
-    uint8 public currentMove = 0;
+
+    event GameStateUpdated(GameState, uint8[9] currentBoard);
 
     function handlePlay(uint8 index) public {
         require(index < 9, "Index out of bounds");
         require(currentBoard[index] == 0, "Square already filled");
-        require(calculateWinner() == 0, "Game already won");
-        require(!isDraw(), "Game ended with draw");
+        require(
+            gameState == GameState.NextX || gameState == GameState.NextO,
+            "Game already ended"
+        );
 
-        currentBoard[index] = xIsNext() ? 1 : 2;
-        currentMove++;
+        currentBoard[index] = gameState == GameState.NextX ? 1 : 2;
         updateGameState();
     }
 
     function resetBoard() public {
         currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-        gameState = 0;
-        currentMove = 0;
+        gameState = GameState.NextX;
+
+        emit GameStateUpdated(gameState, currentBoard);
     }
 
     function updateGameState() private {
         uint8 winner = calculateWinner();
 
         if (winner != 0) {
-            gameState = winner == 1 ? 2 : 3;
+            gameState = winner == 1 ? GameState.WinnerX : GameState.WinnerO;
         } else if (isDraw()) {
-            gameState = 4;
+            gameState = GameState.Draw;
         } else {
-            gameState = xIsNext() ? 0 : 1;
+            gameState = (gameState == GameState.NextX)
+                ? GameState.NextO
+                : GameState.NextX;
         }
+
+        emit GameStateUpdated(gameState, currentBoard);
     }
 
     function calculateWinner() private view returns (uint8) {
@@ -73,8 +86,8 @@ contract TicTacToe {
         return true;
     }
 
-    function xIsNext() private view returns (bool) {
-        return currentMove % 2 == 0;
+    function getGameState() public view returns (GameState) {
+        return gameState;
     }
 
     function getCurrentBoard() public view returns (uint8[9] memory) {
