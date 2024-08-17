@@ -21,8 +21,7 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "styles/*": ["styles/*"],
-      "contracts/*": ["../../eth-contracts/artifacts/contracts/*"]
+      "styles/*": ["styles/*"]
     },
   },
   "include": [
