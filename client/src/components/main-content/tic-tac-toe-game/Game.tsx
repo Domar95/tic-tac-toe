@@ -1,50 +1,44 @@
 import { Box, Button, Stack } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { renderBoard, renderGameState } from "./ticTacToeUtils";
+import useTicTacToe from "hooks/useTicTacToe";
 
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+  const [gameState, setGameState] = useState<string>("");
+  const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
 
-  function handlePlay(nextSquares: string[]) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
-    setCurrentMove(nextHistory.length - 1);
+  const {
+    gameState: contractGameState,
+    board: contractBoard,
+    handlePlay: contractHandlePlay,
+    resetGame: contractResetGame,
+  } = useTicTacToe();
+
+  useEffect(() => {
+    setGameState(renderGameState(contractGameState));
+    setBoard(renderBoard(contractBoard));
+  }, [contractGameState]);
+
+  async function makeMove(index: number) {
+    await contractHandlePlay(index);
   }
 
-  function jumpTo(nextMove: number) {
-    setCurrentMove(nextMove);
+  async function resetGame() {
+    await contractResetGame();
   }
-
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = `Go to move #${move}`;
-    } else {
-      description = "Go to game start";
-    }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
-  });
 
   return (
     <Box sx={{ p: 2 }}>
-      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      <Board squares={board} gameState={gameState} onPlay={makeMove} />
       <Stack direction="column" spacing={2} marginTop={2}>
         <Button
           variant="contained"
-          onClick={() => jumpTo(0)}
+          onClick={() => resetGame()}
           sx={{ width: 100 }}
         >
           Restart
         </Button>
-        <div>
-          <ol>{moves}</ol>
-        </div>
       </Stack>
     </Box>
   );
@@ -54,7 +48,7 @@ function Square({
   value,
   onSquareClick,
 }: {
-  value: string;
+  value: string | null;
   onSquareClick: () => void;
 }) {
   return (
@@ -73,40 +67,21 @@ function Square({
 }
 
 function Board({
-  xIsNext,
   squares,
+  gameState,
   onPlay,
 }: {
-  xIsNext: boolean;
-  squares: string[];
-  onPlay: (nextSquares: string[]) => void;
+  squares: (string | null)[];
+  gameState: string;
+  onPlay: (index: number) => void;
 }) {
   function handleClick(index: number): void {
-    if (squares[index] || calculateWinner(squares)) {
-      return;
-    }
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[index] = "X";
-    } else {
-      nextSquares[index] = "O";
-    }
-    onPlay(nextSquares);
-  }
-
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = `Winner: ${winner}`;
-  } else if (isDraw(squares)) {
-    status = "Draw";
-  } else {
-    status = `Next player: ${xIsNext ? "X" : "O"}`;
+    onPlay(index);
   }
 
   return (
     <>
-      <h2>{status}</h2>
+      <h2>{gameState}</h2>
       <div>
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -124,32 +99,4 @@ function Board({
       </div>
     </>
   );
-
-  function calculateWinner(squares: string[]): string | null {
-    const winningCombinations: number[][] = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < winningCombinations.length; i++) {
-      const [a, b, c] = winningCombinations[i];
-      if (
-        squares[a] &&
-        squares[a] === squares[b] &&
-        squares[a] === squares[c]
-      ) {
-        return squares[a];
-      }
-    }
-    return null;
-  }
-
-  function isDraw(squares: string[]): boolean {
-    return squares.every((square) => square !== null);
-  }
 }
