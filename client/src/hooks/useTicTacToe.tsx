@@ -25,17 +25,21 @@ const useTicTacToe = () => {
 
       setContract(contract);
 
-      setGameState(await contract.getGameState());
-      setBoard(await contract.getCurrentBoard());
+      const handleGameStateUpdated = (
+        gameState: BigInt,
+        updatedBoard: BigInt[]
+      ) => {
+        setGameState(gameState);
+        setBoard(updatedBoard);
+      };
+
+      // Fetch initial game state and board
+      const initialGameState: BigInt = await contract.getGameState();
+      const initialBoard: BigInt[] = await contract.getCurrentBoard();
+      handleGameStateUpdated(initialGameState, initialBoard);
 
       // Listen to game state changes
-      contract.on(
-        "GameStateUpdated",
-        (gameState: BigInt, updatedBoard: BigInt[]) => {
-          setGameState(gameState);
-          setBoard(updatedBoard);
-        }
-      );
+      contract.on("GameStateUpdated", handleGameStateUpdated);
 
       return () => {
         // Clean up listeners
