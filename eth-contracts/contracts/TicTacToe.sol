@@ -15,15 +15,18 @@ contract TicTacToe {
     uint8[9] private currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     address private playerX;
     address private playerO;
+    uint256 private pot;
 
     event GameStateUpdated(GameState, uint8[9] currentBoard);
+    event PotUpdated(uint256 pot);
 
-    function joinGame() public {
+    function joinGame() public payable {
         require(
             gameState == GameState.WaitingForPlayers,
             "Game already started"
         );
         require(playerX != msg.sender, "You have already joined");
+        require(msg.value >= 1000000000000000, "Minimum stake is 0,001 ETH.");
 
         if (playerX == address(0)) {
             playerX = msg.sender;
@@ -32,7 +35,9 @@ contract TicTacToe {
             gameState = GameState.NextX;
         }
 
+        pot += msg.value;
         emit GameStateUpdated(gameState, currentBoard);
+        emit PotUpdated(pot);
     }
 
     function handlePlay(uint8 index) public {
@@ -48,13 +53,45 @@ contract TicTacToe {
         updateGameState();
     }
 
+    function claimReward() public {
+        require(
+            gameState == GameState.WinnerX ||
+                gameState == GameState.WinnerO ||
+                gameState == GameState.Draw,
+            "Game not ended yet"
+        );
+        require(
+            (gameState == GameState.WinnerX && msg.sender == playerX) ||
+                (gameState == GameState.WinnerO && msg.sender == playerO) ||
+                (gameState == GameState.Draw &&
+                    (msg.sender == playerX || msg.sender == playerO)),
+            "Only the winner or players in case of draw can claim the reward"
+        );
+
+        uint256 reward;
+        if (gameState == GameState.Draw) {
+            reward = pot / 2;
+            pot = 0;
+            payable(playerX).transfer(reward);
+            payable(playerO).transfer(reward);
+        } else {
+            reward = pot;
+            pot = 0;
+            payable(msg.sender).transfer(reward);
+        }
+
+        emit PotUpdated(pot);
+    }
+
     function resetBoard() public {
         currentBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         gameState = GameState.WaitingForPlayers;
         playerX = address(0);
         playerO = address(0);
+        pot = 0;
 
         emit GameStateUpdated(gameState, currentBoard);
+        emit PotUpdated(pot);
     }
 
     function updateGameState() private {
@@ -123,5 +160,9 @@ contract TicTacToe {
 
     function getPlayerO() public view returns (address) {
         return playerO;
+    }
+
+    function getPot() public view returns (uint256) {
+        return pot;
     }
 }
