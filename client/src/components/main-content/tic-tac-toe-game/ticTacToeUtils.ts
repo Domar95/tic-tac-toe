@@ -24,3 +24,11 @@ export const renderBoard = (array: bigint[]): (string | null)[] => {
     number === BigInt(1) ? "X" : number === BigInt(2) ? "O" : null
   );
 };
+
+export const isGameFinished = (state: GameState): boolean => {
+  return (
+    state === GameStates.PlayerXWins ||
+    state === GameStates.PlayerOWins ||
+    state === GameStates.Draw
+  );
+};

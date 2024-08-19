@@ -1,8 +1,9 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { renderBoard, renderGameState } from "./ticTacToeUtils";
+import { isGameFinished, renderBoard, renderGameState } from "./ticTacToeUtils";
 import useTicTacToe from "hooks/useTicTacToe";
+import { GameStates } from "types/tic-tac-toe/gameState";
 
 export default function Game() {
   const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
@@ -50,27 +51,33 @@ export default function Game() {
         onPlay={makeMove}
       />
       <Stack direction="column" spacing={2} marginTop={2}>
-        <Button
-          variant="contained"
-          onClick={() => joinGame()}
-          sx={{ width: 100 }}
-        >
-          Join game
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => resetGame()}
-          sx={{ width: 100 }}
-        >
-          Restart
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => claimReward()}
-          sx={{ width: 100 }}
-        >
-          Claim reward
-        </Button>
+        {contractGameState === GameStates.WaitingForPlayers && (
+          <Button
+            variant="contained"
+            onClick={() => joinGame()}
+            sx={{ width: 100 }}
+          >
+            Join game
+          </Button>
+        )}
+        {isGameFinished(contractGameState) && (
+          <Button
+            variant="contained"
+            onClick={() => resetGame()}
+            sx={{ width: 100 }}
+          >
+            Restart
+          </Button>
+        )}
+        {isGameFinished(contractGameState) && (
+          <Button
+            variant="contained"
+            onClick={() => claimReward()}
+            sx={{ width: 100 }}
+          >
+            Claim reward
+          </Button>
+        )}
         <Typography variant="h6">
           Pot: {pot / 1000000000000000000} ETH
         </Typography>
