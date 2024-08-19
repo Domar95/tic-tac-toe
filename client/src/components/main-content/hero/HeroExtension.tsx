@@ -26,6 +26,7 @@ export default function HeroExtension() {
       <Stack direction="row" justifyContent="space-between">
         {cards.map((card) => (
           <Card
+            key={card.title}
             sx={{
               display: "flex",
               backgroundColor: theme.palette.background.default,

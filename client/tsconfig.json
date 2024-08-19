@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2023",
     "lib": [
       "dom",
       "dom.iterable",
@@ -22,7 +22,7 @@
     "baseUrl": "src",
     "paths": {
       "styles/*": ["styles/*"]
-    }
+    },
   },
   "include": [
     "src"
