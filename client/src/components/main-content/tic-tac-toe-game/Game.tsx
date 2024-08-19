@@ -5,7 +5,6 @@ import { renderBoard, renderGameState } from "./ticTacToeUtils";
 import useTicTacToe from "hooks/useTicTacToe";
 
 export default function Game() {
-  const [gameState, setGameState] = useState<string>("");
   const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
   const [pot, setPot] = useState<number>(0);
 
@@ -20,7 +19,6 @@ export default function Game() {
   } = useTicTacToe();
 
   useEffect(() => {
-    setGameState(renderGameState(contractGameState));
     setBoard(renderBoard(contractBoard));
   }, [contractGameState]);
 
@@ -46,7 +44,11 @@ export default function Game() {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Board squares={board} gameState={gameState} onPlay={makeMove} />
+      <Board
+        squares={board}
+        gameState={renderGameState(contractGameState)}
+        onPlay={makeMove}
+      />
       <Stack direction="column" spacing={2} marginTop={2}>
         <Button
           variant="contained"

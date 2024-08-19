@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
 import { TIC_TAC_TOE_ABI, TIC_TAC_TOE_ADDRESS } from "../constants/TicTacToe";
+import { GameState, GameStates } from "types/tic-tac-toe/gameState";
 
 const fetchContract = (signer: ethers.Signer) =>
   new ethers.Contract(TIC_TAC_TOE_ADDRESS, TIC_TAC_TOE_ABI, signer);
 
 const useTicTacToe = () => {
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [gameState, setGameState] = useState<bigint>(BigInt(0));
-  const [board, setBoard] = useState<bigint[]>(Array(9).fill(BigInt(0)));
-  const [pot, setPot] = useState<bigint>(BigInt(0));
+  const [gameState, setGameState] = useState<GameState>(
+    GameStates.WaitingForPlayers
+  );
+  const [board, setBoard] = useState<bigint[]>(Array(9).fill(0n));
+  const [pot, setPot] = useState<bigint>(0n);
 
   useEffect(() => {
     const initialize = async () => {
@@ -27,7 +30,7 @@ const useTicTacToe = () => {
       setContract(contract);
 
       const handleGameStateUpdated = (
-        gameState: bigint,
+        gameState: GameState,
         updatedBoard: bigint[]
       ) => {
         setGameState(gameState);
@@ -39,7 +42,7 @@ const useTicTacToe = () => {
       };
 
       // Fetch initial states
-      const initialGameState: bigint = await contract.getGameState();
+      const initialGameState: GameState = await contract.getGameState();
       const initialBoard: bigint[] = await contract.getCurrentBoard();
       handleGameStateUpdated(initialGameState, initialBoard);
       const initialPot: bigint = await contract.getPot();

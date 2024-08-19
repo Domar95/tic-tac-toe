@@ -1,16 +1,18 @@
-export const renderGameState = (gameState: BigInt): string => {
+import { GameState, GameStates } from "types/tic-tac-toe/gameState";
+
+export const renderGameState = (gameState: GameState): string => {
   switch (gameState) {
-    case BigInt(0):
+    case GameStates.WaitingForPlayers:
       return "Waiting for players to join...";
-    case BigInt(1):
+    case GameStates.NextPlayerX:
       return "Next player: X";
-    case BigInt(2):
+    case GameStates.NextPlayerO:
       return "Next player: O";
-    case BigInt(3):
+    case GameStates.PlayerXWins:
       return "Player X wins!";
-    case BigInt(4):
+    case GameStates.PlayerOWins:
       return "Player O wins!";
-    case BigInt(5):
+    case GameStates.Draw:
       return "It's a draw!";
     default:
       return "Unknown game state";
