@@ -44,7 +44,16 @@ export default function Game() {
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 2,
+        height: 562,
+      }}
+    >
       <Board
         squares={board}
         gameState={renderGameState(contractGameState)}
