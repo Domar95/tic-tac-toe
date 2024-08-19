@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { renderBoard, renderGameState } from "./ticTacToeUtils";
@@ -7,18 +7,30 @@ import useTicTacToe from "hooks/useTicTacToe";
 export default function Game() {
   const [gameState, setGameState] = useState<string>("");
   const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
+  const [pot, setPot] = useState<number>(0);
 
   const {
     gameState: contractGameState,
     board: contractBoard,
+    pot: contractPot,
+    joinGame: contractJoinGame,
     handlePlay: contractHandlePlay,
     resetGame: contractResetGame,
+    claimReward: contractClaimReward,
   } = useTicTacToe();
 
   useEffect(() => {
     setGameState(renderGameState(contractGameState));
     setBoard(renderBoard(contractBoard));
   }, [contractGameState]);
+
+  useEffect(() => {
+    setPot(Number(contractPot));
+  }, [contractPot]);
+
+  async function joinGame() {
+    await contractJoinGame(1000000000000000);
+  }
 
   async function makeMove(index: number) {
     await contractHandlePlay(index);
@@ -28,10 +40,21 @@ export default function Game() {
     await contractResetGame();
   }
 
+  async function claimReward() {
+    await contractClaimReward();
+  }
+
   return (
     <Box sx={{ p: 2 }}>
       <Board squares={board} gameState={gameState} onPlay={makeMove} />
       <Stack direction="column" spacing={2} marginTop={2}>
+        <Button
+          variant="contained"
+          onClick={() => joinGame()}
+          sx={{ width: 100 }}
+        >
+          Join game
+        </Button>
         <Button
           variant="contained"
           onClick={() => resetGame()}
@@ -39,6 +62,16 @@ export default function Game() {
         >
           Restart
         </Button>
+        <Button
+          variant="contained"
+          onClick={() => claimReward()}
+          sx={{ width: 100 }}
+        >
+          Claim reward
+        </Button>
+        <Typography variant="h6">
+          Pot: {pot / 1000000000000000000} ETH
+        </Typography>
       </Stack>
     </Box>
   );
