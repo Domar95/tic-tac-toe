@@ -61,29 +61,17 @@ export default function Game() {
       />
       <Stack direction="column" spacing={2} marginTop={2}>
         {contractGameState === GameStates.WaitingForPlayers && (
-          <Button
-            variant="contained"
-            onClick={() => joinGame()}
-            sx={{ width: 100 }}
-          >
+          <Button variant="contained" onClick={() => joinGame()}>
             Join game
           </Button>
         )}
         {isGameFinished(contractGameState) && (
-          <Button
-            variant="contained"
-            onClick={() => resetGame()}
-            sx={{ width: 100 }}
-          >
+          <Button variant="contained" onClick={() => resetGame()}>
             Restart
           </Button>
         )}
         {isGameFinished(contractGameState) && (
-          <Button
-            variant="contained"
-            onClick={() => claimReward()}
-            sx={{ width: 100 }}
-          >
+          <Button variant="contained" onClick={() => claimReward()}>
             Claim reward
           </Button>
         )}
@@ -107,8 +95,8 @@ function Square({
       variant="contained"
       onClick={onSquareClick}
       sx={{
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 100,
         borderRadius: 0,
       }}
     >
