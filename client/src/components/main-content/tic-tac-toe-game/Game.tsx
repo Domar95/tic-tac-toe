@@ -60,24 +60,27 @@ export default function Game() {
         onPlay={makeMove}
       />
       <Stack direction="column" spacing={2} marginTop={2}>
+        <Typography variant="h6">
+          Pot: {pot / 1000000000000000000} ETH
+        </Typography>
+
         {contractGameState === GameStates.WaitingForPlayers && (
           <Button variant="contained" onClick={() => joinGame()}>
             Join game
           </Button>
         )}
-        {isGameFinished(contractGameState) && (
-          <Button variant="contained" onClick={() => resetGame()}>
-            Restart
-          </Button>
-        )}
+
         {isGameFinished(contractGameState) && (
           <Button variant="contained" onClick={() => claimReward()}>
             Claim reward
           </Button>
         )}
-        <Typography variant="h6">
-          Pot: {pot / 1000000000000000000} ETH
-        </Typography>
+
+        {isGameFinished(contractGameState) && (
+          <Button variant="contained" onClick={() => resetGame()}>
+            Restart
+          </Button>
+        )}
       </Stack>
     </Box>
   );
