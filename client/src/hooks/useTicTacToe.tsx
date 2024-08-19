@@ -8,9 +8,9 @@ const fetchContract = (signer: ethers.Signer) =>
 
 const useTicTacToe = () => {
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [gameState, setGameState] = useState<BigInt>(BigInt(0));
-  const [board, setBoard] = useState<BigInt[]>(Array(9).fill(BigInt(0)));
-  const [pot, setPot] = useState<BigInt>(BigInt(0));
+  const [gameState, setGameState] = useState<bigint>(BigInt(0));
+  const [board, setBoard] = useState<bigint[]>(Array(9).fill(BigInt(0)));
+  const [pot, setPot] = useState<bigint>(BigInt(0));
 
   useEffect(() => {
     const initialize = async () => {
@@ -27,22 +27,22 @@ const useTicTacToe = () => {
       setContract(contract);
 
       const handleGameStateUpdated = (
-        gameState: BigInt,
-        updatedBoard: BigInt[]
+        gameState: bigint,
+        updatedBoard: bigint[]
       ) => {
         setGameState(gameState);
         setBoard(updatedBoard);
       };
 
-      const handlePotUpdated = (pot: BigInt) => {
+      const handlePotUpdated = (pot: bigint) => {
         setPot(pot);
       };
 
       // Fetch initial states
-      const initialGameState: BigInt = await contract.getGameState();
-      const initialBoard: BigInt[] = await contract.getCurrentBoard();
+      const initialGameState: bigint = await contract.getGameState();
+      const initialBoard: bigint[] = await contract.getCurrentBoard();
       handleGameStateUpdated(initialGameState, initialBoard);
-      const initialPot: BigInt = await contract.getPot();
+      const initialPot: bigint = await contract.getPot();
       handlePotUpdated(initialPot);
 
       // Listen to state changes

@@ -17,8 +17,8 @@ export const renderGameState = (gameState: BigInt): string => {
   }
 };
 
-export const renderBoard = (array: BigInt[]): (string | null)[] => {
-  return array.map((number: BigInt) =>
+export const renderBoard = (array: bigint[]): (string | null)[] => {
+  return array.map((number: bigint) =>
     number === BigInt(1) ? "X" : number === BigInt(2) ? "O" : null
   );
 };
