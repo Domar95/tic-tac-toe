@@ -10,6 +10,7 @@ const useTicTacToe = () => {
   const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [gameState, setGameState] = useState<BigInt>(BigInt(0));
   const [board, setBoard] = useState<BigInt[]>(Array(9).fill(BigInt(0)));
+  const [pot, setPot] = useState<BigInt>(BigInt(0));
 
   useEffect(() => {
     const initialize = async () => {
@@ -33,22 +34,43 @@ const useTicTacToe = () => {
         setBoard(updatedBoard);
       };
 
-      // Fetch initial game state and board
+      const handlePotUpdated = (pot: BigInt) => {
+        setPot(pot);
+      };
+
+      // Fetch initial states
       const initialGameState: BigInt = await contract.getGameState();
       const initialBoard: BigInt[] = await contract.getCurrentBoard();
       handleGameStateUpdated(initialGameState, initialBoard);
+      const initialPot: BigInt = await contract.getPot();
+      handlePotUpdated(initialPot);
 
-      // Listen to game state changes
+      // Listen to state changes
       contract.on("GameStateUpdated", handleGameStateUpdated);
+      contract.on("PotUpdated", handlePotUpdated);
 
       return () => {
         // Clean up listeners
-        contract.off("GameStateUpdated");
+        contract.removeAllListeners();
       };
     };
 
     initialize();
   }, [TIC_TAC_TOE_ABI, TIC_TAC_TOE_ADDRESS]);
+
+  const joinGame = async (stake: number) => {
+    if (!contract) return;
+
+    try {
+      const tx: ethers.TransactionResponse = await contract.joinGame({
+        value: stake,
+      });
+      await tx.wait(); // Wait for the transaction to be confirmed
+      console.log("Joined game with stake:", stake);
+    } catch (error: unknown) {
+      console.error("Error joining game:", error);
+    }
+  };
 
   const handlePlay = async (index: number) => {
     if (!contract) return;
@@ -74,11 +96,26 @@ const useTicTacToe = () => {
     }
   };
 
+  const claimReward = async () => {
+    if (!contract) return;
+
+    try {
+      const tx: ethers.TransactionResponse = await contract.claimReward();
+      await tx.wait(); // Wait for the transaction to be confirmed
+      console.log("Claimed reward");
+    } catch (error: unknown) {
+      console.error("Error claiming reward:", error);
+    }
+  };
+
   return {
     gameState,
     board,
+    pot,
+    joinGame,
     handlePlay,
     resetGame,
+    claimReward,
   };
 };
 
