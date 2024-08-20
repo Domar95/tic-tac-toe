@@ -1,6 +1,6 @@
 import { Navbar } from "./components/common";
 import { ConnectionProvider } from "hooks/ConnectionContext";
-import MainContent from "components/main-content/MainContent";
+import LandingRoute from "app/routes/Landing";
 import { Route, Routes } from "react-router-dom";
 import { Paths } from "constants/paths";
 
@@ -10,10 +10,10 @@ function App() {
       <ConnectionProvider>
         <Navbar />
         <Routes>
-          <Route path={Paths.HOME} element={<MainContent />} />
-          <Route path={Paths.LEADERBOARD} element={<MainContent />} />
-          <Route path={Paths.CONTRACT} element={<MainContent />} />
-          <Route path={Paths.ABOUT} element={<MainContent />} />
+          <Route path={Paths.HOME} element={<LandingRoute />} />
+          <Route path={Paths.LEADERBOARD} element={<LandingRoute />} />
+          <Route path={Paths.CONTRACT} element={<LandingRoute />} />
+          <Route path={Paths.ABOUT} element={<LandingRoute />} />
         </Routes>
       </ConnectionProvider>
     </div>
