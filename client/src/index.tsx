@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { MetaMaskProvider } from "@metamask/sdk-react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "styles/theme";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -24,7 +25,9 @@ root.render(
           infuraAPIKey: process.env.REACT_APP_INFURA_API_KEY,
         }}
       >
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </MetaMaskProvider>
     </ThemeProvider>
   </React.StrictMode>
