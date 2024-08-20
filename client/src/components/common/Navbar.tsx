@@ -15,8 +15,14 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import GamesIcon from "@mui/icons-material/Games";
 import ConnectButton from "./ConnectButton";
+import { Paths } from "constants/paths";
+import { Link } from "react-router-dom";
 
-const pages = ["Leaderboard", "Contract", "About"];
+const pages: { title: string; path: Paths }[] = [
+  { title: "Leaderboard", path: Paths.LEADERBOARD },
+  { title: "Contract", path: Paths.CONTRACT },
+  { title: "About", path: Paths.ABOUT },
+];
 
 const Navbar = () => {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
@@ -35,7 +41,13 @@ const Navbar = () => {
       sx={{ backgroundColor: "#FAFAFA", color: "inherit" }}
     >
       <Toolbar disableGutters sx={{ paddingLeft: 2, paddingRight: 2 }}>
-        <IconButton size="large" edge="start" color="inherit">
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          component={Link}
+          to={Paths.HOME}
+        >
           <GamesIcon />
         </IconButton>
         <Typography
@@ -49,7 +61,7 @@ const Navbar = () => {
           <Stack direction="row" paddingRight={2}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.title}
                 sx={{
                   textTransform: "none",
                   color: "inherit",
@@ -58,8 +70,10 @@ const Navbar = () => {
                     backgroundColor: "#F5F5F5",
                   },
                 }}
+                component={Link}
+                to={page.path}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Stack>
@@ -80,8 +94,13 @@ const Navbar = () => {
                 <ConnectButton />
               </MenuItem>
               {pages.map((page) => (
-                <MenuItem key={page} color="inherit">
-                  {page}
+                <MenuItem
+                  key={page.title}
+                  color="inherit"
+                  component={Link}
+                  to={page.path}
+                >
+                  {page.title}
                 </MenuItem>
               ))}
             </MenuList>
