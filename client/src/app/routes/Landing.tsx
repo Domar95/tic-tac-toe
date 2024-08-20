@@ -1,15 +1,16 @@
 import { Box, Container } from "@mui/material";
 import { useConnection } from "hooks/ConnectionContext";
-import Game from "./tic-tac-toe-game/Game";
-import Hero from "./hero/Hero";
-import HeroExtension from "./hero/HeroExtension";
+import Game from "../../components/main-content/tic-tac-toe-game/Game";
+import Hero from "../../components/main-content/hero/Hero";
+import HeroExtension from "../../components/main-content/hero/HeroExtension";
 import checker from "assets/checker.png";
+import { Layout } from "components/layouts/Layout";
 
-export default function MainContent() {
+export default function LandingRoute() {
   const { isConnected } = useConnection();
 
   return (
-    <div>
+    <Layout>
       {isConnected ? (
         <Box>
           <Container maxWidth="sm">
@@ -34,6 +35,6 @@ export default function MainContent() {
           </Container>
         </>
       )}
-    </div>
+    </Layout>
   );
 }

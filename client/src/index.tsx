@@ -1,32 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import App from "./app/App";
 import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
-import { MetaMaskProvider } from "@metamask/sdk-react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import theme from "styles/theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <MetaMaskProvider
-        debug={false}
-        sdkOptions={{
-          dappMetadata: {
-            name: "Tic Tac Toe",
-            url: window.location.href,
-          },
-          infuraAPIKey: process.env.REACT_APP_INFURA_API_KEY,
-        }}
-      >
-        <App />
-      </MetaMaskProvider>
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );
 
