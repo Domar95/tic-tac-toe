@@ -8,7 +8,6 @@ function App() {
   return (
     <div>
       <ConnectionProvider>
-        <Navbar />
         <Routes>
           <Route path={Paths.HOME} element={<LandingRoute />} />
           <Route path={Paths.LEADERBOARD} element={<LandingRoute />} />
